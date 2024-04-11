@@ -1,72 +1,77 @@
 package com.remitly.rolechecker;
 
-import com.remitly.rolechecker.RolePolicyChecker;
-import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileReader;
+import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RolePolicyCheckerTest {
 
-    String jsonString = "{\n" +
-            "  \"PolicyName\": \"root\",\n" +
-            "  \"PolicyDocument\": {\n" +
-            "    \"Version\": \"2012-10-17\",\n" +
-            "    \"Statement\": [\n" +
-            "      {\n" +
-            "        \"Sid\": \"IamListAccess\",\n" +
-            "        \"Effect\": \"Allow\",\n" +
-            "        \"Action\": [\n" +
-            "          \"iam:ListRoles\",\n" +
-            "          \"iam:ListUsers\"\n" +
-            "        ],\n" +
-            "        \"Resource\": \"*\"\n" +
-            "      }\n" +
-            "    ]\n" +
-            "  }\n" +
-            "}";
-
-
-
-
     @Test
-    void isPolicyDocumentInJSONObject(){
-        try {
-            String filePath = "../remitly/src/main/resources/role_policy.json";
-            FileReader reader = new FileReader(filePath);
-            JSONObject jsonObject = new JSONObject(new JSONTokener(reader));
-
-            RolePolicyChecker checker = new RolePolicyChecker(jsonObject);
-
-            assertTrue(jsonObject.has("PolicyDocument"), "PolicyDocument should exist in the JSON file");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Test
-    void isStatementArrayEmpty(){
+    public void shouldReturnTrueForValidPolicy() {
 
         String filePath = "../remitly/src/main/resources/role_policy.json";
-        FileReader reader = new FileReader(filePath);
-        JSONObject jsonObject = new JSONObject(new JSONTokener(reader));
+
+
+        JSONObject jsonObject = readJsonFromFile(filePath);
+
 
         RolePolicyChecker checker = new RolePolicyChecker(jsonObject);
-        JSONArray statementArray = jsonObject.getJSONObject("PolicyDocument").getJSONArray("Statement");
+        boolean result = checker.isValid(filePath);
 
-
+        assertFalse(result);
     }
 
+    @Test
+    public void shouldReturnFalseForInvalidPolicy() {
+
+        String filePath = "src/test/resources/role_policy_no_asterisk.json";
+
+        JSONObject jsonObject = readJsonFromFile(filePath);
+
+        RolePolicyChecker checker = new RolePolicyChecker(jsonObject);
+        boolean result = checker.isValid(filePath);
+
+        assertTrue(result);
     }
 
+    @Test
+    public void shouldReturnTrueWhenStatementIsMissing() {
+
+        String filePath = "src/test/resources/role_policy_without_statement.json";
+
+        JSONObject jsonObject = readJsonFromFile(filePath);
+
+        RolePolicyChecker checker = new RolePolicyChecker(jsonObject);
 
 
+        assertTrue(checker.isValid(filePath));
+    }
 
+    @Test
+    public void shouldReturnTrueWhenJsonIsEmpty() {
 
+        String filePath = "src/test/resources/role_policy_empty.json";
 
+        JSONObject jsonObject = readJsonFromFile(filePath);
+
+        RolePolicyChecker checker = new RolePolicyChecker(jsonObject);
+
+        assertTrue(checker.isValid(filePath));
+    }
+
+    private JSONObject readJsonFromFile(String filePath) {
+        try {
+            FileReader reader = new FileReader(filePath);
+            return new JSONObject(new JSONTokener(reader));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+}
