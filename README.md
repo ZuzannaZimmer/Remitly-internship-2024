@@ -4,11 +4,11 @@ Write a method verifying the input JSON data. Input data format is defined as AW
 
 Java + Maven
 
-#Setup
+## Setup
 To run this project, make sure you have Java and Maven installed on your computer
 
-[java download](https://www.oracle.com/java/technologies/downloads/)
-[maven download](https://maven.apache.org/download.cgi)
+* [java download](https://www.oracle.com/java/technologies/downloads/)
+* [maven download](https://maven.apache.org/download.cgi)
 
 ```
 #clone
