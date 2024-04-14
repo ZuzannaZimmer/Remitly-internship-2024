@@ -2,10 +2,6 @@ package com.remitly.rolechecker;
 
 import org.json.*;
 
-import java.io.FileReader;
-import java.io.IOException;
-
-
 public class RolePolicyChecker {
 
     private final JSONObject jsonObject;

@@ -15,7 +15,7 @@ public class RolePolicyCheckerTest {
     @Test
     public void shouldReturnTrueForValidPolicy() {
 
-        String filePath = "../remitly/src/main/resources/role_policy.json";
+        String filePath = "src/main/resources/role_policy.json";
 
 
         JSONObject jsonObject = readJsonFromFile(filePath);
