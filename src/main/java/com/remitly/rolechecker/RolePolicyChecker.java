@@ -2,6 +2,10 @@ package com.remitly.rolechecker;
 
 import org.json.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class RolePolicyChecker {
 
     private final JSONObject jsonObject;
@@ -25,5 +29,20 @@ public class RolePolicyChecker {
                 }
     }
 
-}
+    public boolean isJsonFile(String filePath) {
+
+            if (!filePath.endsWith(".json")) {
+                return false;
+            }
+            try {
+                String content = new String(Files.readAllBytes(Paths.get(filePath)));
+                new JSONObject(content);
+                return true;
+
+            } catch (IOException | JSONException e) {
+                return false;
+            }
+    }
+    }
+
 
