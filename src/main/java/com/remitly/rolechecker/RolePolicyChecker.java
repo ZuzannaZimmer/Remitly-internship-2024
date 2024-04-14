@@ -19,12 +19,10 @@ public class RolePolicyChecker {
 
                 return !resourceValue.equals("*");
 
-            } catch (JSONException e){
-
-            e.printStackTrace();
-            return true;
-
-            }
+                } catch (JSONException e){
+                    e.printStackTrace();
+                    return true;
+                }
     }
 
 }
