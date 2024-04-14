@@ -6,7 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class Main {
+
     public static void main(String[] args) {
+
         try {
             String filePath = "src/main/resources/role_policy.json";
             FileReader reader = new FileReader(filePath);
@@ -19,7 +21,5 @@ public class Main {
         } catch (IOException e){
             e.printStackTrace();
         }
-
-
     }
 }
